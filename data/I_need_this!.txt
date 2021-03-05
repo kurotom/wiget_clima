@@ -1,0 +1,1 @@
+Necesario para guardar datos de configuracion y funcionamiento.
