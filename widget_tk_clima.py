@@ -114,7 +114,7 @@ def actualizar():
             else:
                 ciudad_text = city
 
-            lbl_ciudad = ttk.Label(frame2, text=ciudad_text, font=font_contenido, justify="center")
+            lbl_ciudad = ttk.Label(frame1, text=ciudad_text, font=font_ciudad, justify="center")
             dia_label = ttk.Label(frame2, text=f"{dia_nombre}", font=font_contenido)
             label_date = ttk.Label(frame2, text=date['fecha'], font=font_contenido)
             label_weather = ttk.Label(frame2, text=weather['weather'][1], font=font_contenido)
@@ -133,12 +133,12 @@ def actualizar():
             title_label.pack(expand=True, fill="y")
             estilo_caja(title_frame)
 
-            lbl_ciudad.place(x=80, y=8)
-            dia_label.place(x=85, y=32)
-            label_date.place(x=290, y=32)
-            label_weather_temp.place(x=65, y=52)
-            label_weather.place(x=120, y=52)
-            sol.place(x=200, y=52)
+            lbl_ciudad.pack(expand=True, fill="y")
+            dia_label.place(x=150, y=5)
+            label_date.place(x=250, y=5)
+            label_weather_temp.place(x=155, y=25)
+            label_weather.place(x=250, y=25)
+            sol.place(x=128, y=50)
 
             texto = ""
             for itm in main:
@@ -159,6 +159,7 @@ def settings_opciones():
         return seleccionado
 
     def cities():
+        listbox_ciudades.delete(0, END)
         if entry_buscar.get() != "":
             client = pymongo.MongoClient("mongodb+srv://consulta_data:qfXLWGvZ8nZmS8Zb@db-cities.rrog3.mongodb.net"
                                          "/info_cities?retryWrites=true&w=majority")
@@ -168,6 +169,7 @@ def settings_opciones():
             geo = Nominatim(user_agent="simple_widget")
 
             xi = 0
+
             for item in collection.find({"name": {"$regex": entry_buscar.get(), "$options": "i"}}):
                 ubicacion = geo.reverse(f"{item['coord']['lat']}, {item['coord']['lon']}", language="en")
                 items_data = f"{item['name']}," \
@@ -254,6 +256,7 @@ def settings_opciones():
 
     entrada_label = StringVar()
     lbl_key = Label(frame_cr4, text="Key API")
+    lbl_search = Label(frame_cr4, text="Search City")
     key_entry = Entry(frame_cr4, textvariable=entrada_label, show=None, width=31)
 
     buscar_str = StringVar()
@@ -292,6 +295,7 @@ def settings_opciones():
     frame_cr4.grid(column=1, columnspan=4, rowspan=4, padx=10, pady=(10, 1))
     lbl_key.grid(column=1, row=1)
     key_entry.grid(column=2, row=1, padx=10)
+    lbl_search.grid(column=1, row=2)
     entry_buscar.grid(column=2, columnspan=4, row=2)
     boton_buscar.grid(columnspan=4, row=3, pady=(5, 1))
 
@@ -334,6 +338,7 @@ if os.path.exists(file_opciones):
     color_x = "#EEE"
     font_titulo = ("Droid Sans", 13)
     font_contenido = ("Utopia", 12)
+    font_ciudad = ("Utopia", 9)
 
     base = Tk()
     base.title("Simple Weather Widget")
@@ -342,7 +347,7 @@ if os.path.exists(file_opciones):
     stl = ttk.Style()
     stl.configure("color_frame.TFrame", background="#EEE")
     fr_botom_color = ttk.Style()
-    fr_botom_color.configure("botom_color.TFrame", background="#525252")  # "#818D92")
+    fr_botom_color.configure("botom_color.TFrame", background="#525252")
 
     refresh_icon = PhotoImage(file="icons/refresh_icon.png").subsample(2, 2)
     quit_icon = PhotoImage(file="icons/quit_icon.png").subsample(2, 2)
@@ -357,12 +362,15 @@ if os.path.exists(file_opciones):
     label_data_source = Label(frame_boton, text="OpenWeatherMap")
     label_data_source["background"] = "#525252"
 
+    frame1 = ttk.Frame(base, width=500, height=50, style="color_frame.TFrame", relief="groove")
+    frame1['borderwidth'] = 5
     frame2 = ttk.Frame(base, width=500, height=90, style="color_frame.TFrame")
-    frame3 = ttk.Frame(base, height=94, style="color_frame.TFrame")
+    frame3 = ttk.Frame(base, height=105, style="color_frame.TFrame")
     frame5 = ttk.Frame(base, height=132, style="color_frame.TFrame")
 
-    frame2.grid(pady=(5, 0), ipady=1, sticky="WE")
-    frame3.grid(row=2, column=0, pady=(0, 5), ipady=3, sticky="WE")
+    frame1.grid(pady=(5, 0), ipady=5, sticky="WE")
+    frame2.grid(pady=(0, 0), ipady=2, sticky="WE")
+    frame3.grid(row=2, column=0, pady=(0, 5), ipady=5, sticky="NSEW")
     estilo_caja(frame2)
     estilo_caja(frame3)
 
@@ -382,10 +390,10 @@ if os.path.exists(file_opciones):
     base.mainloop()
 else:
     try:
-        settings_opciones()
         color_x = "#EEE"
         font_titulo = ("Droid Sans", 13)
         font_contenido = ("Utopia", 12)
+        font_ciudad = ("Utopia", 9)
 
         base = Tk()
         base.title("Simple Weather Widget")
@@ -394,7 +402,7 @@ else:
         stl = ttk.Style()
         stl.configure("color_frame.TFrame", background="#EEE")
         fr_botom_color = ttk.Style()
-        fr_botom_color.configure("botom_color.TFrame", background="#525252")  # "#818D92")
+        fr_botom_color.configure("botom_color.TFrame", background="#525252")
 
         refresh_icon = PhotoImage(file="icons/refresh_icon.png").subsample(2, 2)
         quit_icon = PhotoImage(file="icons/quit_icon.png").subsample(2, 2)
@@ -409,12 +417,15 @@ else:
         label_data_source = Label(frame_boton, text="OpenWeatherMap")
         label_data_source["background"] = "#525252"
 
+        frame1 = ttk.Frame(base, width=500, height=50, style="color_frame.TFrame", relief="groove")
+        frame1['borderwidth'] = 5
         frame2 = ttk.Frame(base, width=500, height=90, style="color_frame.TFrame")
-        frame3 = ttk.Frame(base, height=94, style="color_frame.TFrame")
+        frame3 = ttk.Frame(base, height=105, style="color_frame.TFrame")
         frame5 = ttk.Frame(base, height=132, style="color_frame.TFrame")
 
-        frame2.grid(pady=(5, 0), ipady=1, sticky="WE")
-        frame3.grid(row=2, column=0, pady=(0, 5), ipady=3, sticky="WE")
+        frame1.grid(pady=(5, 0), ipady=5, sticky="WE")
+        frame2.grid(pady=(0, 0), ipady=2, sticky="WE")
+        frame3.grid(row=2, column=0, pady=(0, 5), ipady=5, sticky="NSEW")
         estilo_caja(frame2)
         estilo_caja(frame3)
 
@@ -433,4 +444,5 @@ else:
 
         base.mainloop()
     except:
+        print("error")
         pass

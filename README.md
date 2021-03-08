@@ -9,6 +9,7 @@
 
 ### Limitaciones.
 - Idioma, solamente inglés y español.
+- Necesita conexion a Internet.
 
 
 
