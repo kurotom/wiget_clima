@@ -389,6 +389,7 @@ if os.path.exists(file_opciones):
 
     base.mainloop()
 else:
+    settings_opciones()
     try:
         color_x = "#EEE"
         font_titulo = ("Droid Sans", 13)

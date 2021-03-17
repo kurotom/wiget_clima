@@ -14,7 +14,7 @@
 
 
 ### Aclaración:
-- Por motivos de limitaciones de consultas que posee la API, la llave no viene incluida. Usted puede crear una cuenta y obtener una key para usarla en el programa.
+- Por motivos de limitaciones de consultas que posee la API, la llave no viene incluida. Usted puede crear una cuenta y obtener una key para usar el programa.
 
 https://home.openweathermap.org/users/sign_in
 
